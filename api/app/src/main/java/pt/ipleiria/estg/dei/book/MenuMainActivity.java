@@ -21,8 +21,10 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 
+import pt.ipleiria.estg.dei.book.listeners.LoginListener;
+
 public class MenuMainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, LoginListener {
 
     public static final int ADD = 100, EDIT = 200, DELETE = 300;
     public static final String OP_CODE = "OPCODE";
@@ -117,5 +119,10 @@ public class MenuMainActivity extends AppCompatActivity implements
 
         item.setCheckable(true);
         onNavigationItemSelected(item);
+    }
+
+    @Override
+    public void onValidateLogin(String token, String email, Context context) {
+
     }
 }

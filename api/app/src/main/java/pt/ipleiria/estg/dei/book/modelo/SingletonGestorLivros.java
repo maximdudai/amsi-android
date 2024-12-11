@@ -10,11 +10,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,12 +22,15 @@ import pt.ipleiria.estg.dei.book.MenuMainActivity;
 import pt.ipleiria.estg.dei.book.R;
 import pt.ipleiria.estg.dei.book.listeners.LivroListener;
 import pt.ipleiria.estg.dei.book.listeners.LivrosListener;
+import pt.ipleiria.estg.dei.book.listeners.LoginListener;
 import pt.ipleiria.estg.dei.book.utils.LivroJsonParser;
+import pt.ipleiria.estg.dei.book.utils.LoginParser;
 
 public class SingletonGestorLivros {
 
     private static SingletonGestorLivros instance = null;
     private ArrayList<Livro> livros;
+    private ArrayList<String> dadosApi;
 
     private LivroBDHelper livroBDHelper = null;
 
@@ -38,6 +39,7 @@ public class SingletonGestorLivros {
 
     private LivrosListener livrosListener;
     private LivroListener livroListener;
+    private LoginListener loginListener;
 
     public static synchronized SingletonGestorLivros getInstance(Context context) {
         if(instance == null) {
@@ -245,6 +247,37 @@ public class SingletonGestorLivros {
         }
     }
 
+    public void loginAPI(String email, String password, final Context context) {
+        StringRequest request = new StringRequest(Request.Method.POST, murlAPILogin, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                String token = String.valueOf(LoginParser.parseLoginData(response));
+
+                System.out.println("---- token " + token);
+
+                if(loginListener != null)
+                    loginListener.onValidateLogin(token, "something", context);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
+
+                return params;
+            }
+        };
+        volleyQueue.add(request);
+    }
+
+
     //registo listeners
     public void setLivrosListener(LivrosListener livrosListener) {
         this.livrosListener = livrosListener;
@@ -252,6 +285,9 @@ public class SingletonGestorLivros {
 
     public void setLivroListener(LivroListener livroListener) {
         this.livroListener = livroListener;
+    }
+    public void setLoginListener(LoginListener loginListener) {
+        this.loginListener = loginListener;
     }
     //endregion
 }

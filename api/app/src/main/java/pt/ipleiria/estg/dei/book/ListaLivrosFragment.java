@@ -142,6 +142,5 @@ public class ListaLivrosFragment extends Fragment implements LivrosListener {
         if(listaLivros != null) {
             lvLivros.setAdapter(new ListaLivrosAdaptador(getContext(), listaLivros));
         }
-
     }
 }
