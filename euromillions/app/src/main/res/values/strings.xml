@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">euromillions</string>
+    <string name="insertKey">Insira a sua chave!</string>
+    <string name="generate_key">Generate Key</string>
+    <string name="generated_numbers">Generated Numbers</string>
+    <string name="generated_stars">Generated Stars</string>
+</resources>

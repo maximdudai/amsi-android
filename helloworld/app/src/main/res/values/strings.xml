@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">helloworld</string>
+    <string name="textBtnGuess">Guess</string>
+    <string name="textEThint">Value (1 - 10)</string>
+</resources>
